@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Color Index Search</title>
+<style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .box {
+      border-radius: 15px;
+      padding: 20px;
+      margin: 5vw;
+      width: 30vw;  /* Set width to 30% of viewport width */
+      height: calc(15vw - 40px); /* Set height to half of the width (15vw) minus padding (20px * 2) */
+      box-sizing: border-box;
+      display: flex; /* Add this */
+      justify-content: center; /* Add this */
+      align-items: center; /* Add this */
+      font-family: 'BentonSans', sans-serif; /* Add this */
+      font-size: 24px; /* Adjust font size as needed */
+    }
+
+    .back-button {
+      position: fixed;
+      top: 5px;
+      right: 5px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+</style>
+</head>
+<body>
+<div class="back-button" onclick="window.location='/';">&lt; Back</div>
+<div class="box-container">
+<form id="color-form" method="POST">
+<label for="x">X:</label><br />
+<input type="number" id="x" name="x" required /><br />
+<label for="y">Y:</label><br />
+<input type="number" id="y" name="y" required /><br />
+<label for="z">Z:</label><br />
+<input type="number" id="z" name="z" required /><br />
+<input type="submit" value="Find me the color!" />
+</form>
+</div>
+<div class="result">
+<h3>Color Found:</h3>
+<p id="color-found">{{ color_found }}</p>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#color-form').submit(function(e) {
+            e.preventDefault();
+            const x = $('#x').val();
+            const y = $('#y').val();
+            const z = $('#z').val();
+            const data = { x, y, z };
+            $.post('/run_function', data, function(result) {
+              if (result.color) {
+                $('#color-found').text(result.color);
+              } else {
+                $('#color-found').text('Null');
+              }
+            });
+        });
+    });
+</script>
+</body>
+</html>

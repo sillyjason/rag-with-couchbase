@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Color Index Search</title>
+<style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .box {
+      border-radius: 15px;
+      padding: 20px;
+      margin: 5vw;
+      width: 30vw;  /* Set width to 30% of viewport width */
+      height: calc(15vw - 40px); /* Set height to half of the width (15vw) minus padding (20px * 2) */
+      box-sizing: border-box;
+      display: flex; /* Add this */
+      justify-content: center; /* Add this */
+      align-items: center; /* Add this */
+      font-family: 'BentonSans', sans-serif; /* Add this */
+      font-size: 24px; /* Adjust font size as needed */
+    }
+
+    .back-button {
+      position: fixed;
+      top: 5px;
+      right: 5px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .wide-input {
+      width: 60vw;
+      margin-top: 3px;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      margin-top: 10px;
+      padding: 10px;
+      border: none;
+      background-color: #3498db;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+</style>
+</head>
+<body>
+<div class="back-button" onclick="window.location='/';">&lt; Back</div>
+<h1>Create a Color!</h1>
+<div class="box-container">
+<form id="color-form" method="POST">
+<label for="x">Name of Color</label><br />
+<input class="wide-input" type="text" id="color_name" name="color_name" required /><br />
+<label for="y">Description of Color</label><br />
+<textarea class="wide-input" id="color_desc" name="color_desc" rows="4" required></textarea><br />
+<label for="z">Color ID</label><br />
+<input class="wide-input" type="text" id="color_id" name="color_id" required /><br />
+<label for="x">RGB - RED</label><br />
+<input class="wide-input" type="number" id="x" name="x" required /><br />
+<label for="y">RGB - GREEN</label><br />
+<input class="wide-input" type="number" id="y" name="y" required /><br />
+<label for="z">RGB - BLUE</label><br />
+<input class="wide-input" type="number" id="z" name="z" required /><br />
+<input class="wide-input button" type="submit" value="Create Color!" />
+</form>
+</div>
+<div class="result">
+<p id="insert_res">{{ color_found }}</p>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#color-form').submit(function(e) {
+            e.preventDefault();
+            const color_name = $('#color_name').val();
+            const color_desc = $('#color_desc').val();
+            const color_id = $('#color_id').val();
+            const x = $('#x').val();
+            const y = $('#y').val();
+            const z = $('#z').val();
+            const data = { color_name, color_desc, color_id, x, y, z };
+            $.post('/add_custom_color', data, function(result) {
+              if (result.color) {
+                $('#insert_res').text("Insert Successful!");
+              } else {
+                $('#insert_res').text("Failed!");
+              }
+            });
+        });
+    });
+</script>
+</body>
+</html>

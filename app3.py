@@ -19,12 +19,10 @@ blueprint3 = Blueprint('add_custom_color', __name__)
 
 @blueprint3.route('/add_custom_color', methods=['POST'])
 def add_custom_color():
-    x = float(request.form['x'])
-    y = float(request.form['y'])
-    z = float(request.form['z'])
     color_name = request.form['color_name']
     color_desc = request.form['color_desc']
     color_id = request.form['color_id']
+    rgb = request.form['rgb']
 
 
     client = OpenAI()
@@ -42,7 +40,7 @@ def add_custom_color():
         document = dict(
             brightness=99.99,
             color=color_name,
-            colorvect_l2=[x, y, z],
+            colorvect_l2=split_and_convert(rgb),
             description=color_desc,
             embedding_model="text-embedding-ada-002-v2",
             embedding_vector_dot=color_vec,
@@ -59,3 +57,12 @@ def add_custom_color():
         return { "color": color_name, "color_id": color_id }
     except Exception as e:
         print("exception:", e)
+        
+
+def split_and_convert(input_string):
+    try:
+        values = input_string.split(",")
+        floats = [float(value.strip()) for value in values]
+        return floats
+    except ValueError:
+        return [5, 5, 5]

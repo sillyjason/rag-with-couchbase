@@ -73,12 +73,8 @@
 <textarea class="wide-input" id="color_desc" name="color_desc" rows="4" required></textarea><br />
 <label for="z">Color ID</label><br />
 <input class="wide-input" type="text" id="color_id" name="color_id" required /><br />
-<label for="x">RGB - RED</label><br />
-<input class="wide-input" type="number" id="x" name="x" required /><br />
-<label for="y">RGB - GREEN</label><br />
-<input class="wide-input" type="number" id="y" name="y" required /><br />
-<label for="z">RGB - BLUE</label><br />
-<input class="wide-input" type="number" id="z" name="z" required /><br />
+<label for="x">RGB Vector</label><br />
+<input class="wide-input" type="text" id="rgb" name="rgb" required /><br />
 <input class="wide-input button" type="submit" value="Create Color!" />
 </form>
 </div>
@@ -93,10 +89,8 @@
             const color_name = $('#color_name').val();
             const color_desc = $('#color_desc').val();
             const color_id = $('#color_id').val();
-            const x = $('#x').val();
-            const y = $('#y').val();
-            const z = $('#z').val();
-            const data = { color_name, color_desc, color_id, x, y, z };
+            const rgb = $('#rgb').val();
+            const data = { color_name, color_desc, color_id, rgb };
             $.post('/add_custom_color', data, function(result) {
               if (result.color) {
                 $('#insert_res').text("Insert Successful!");

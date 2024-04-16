@@ -32,15 +32,14 @@ def find_color_by_desc():
             VectorSearch.from_vector_query(VectorQuery('embedding_vector_dot', vector, num_candidates=1)))
             # Change the limit value to return more results. Change the fields array to return different fields from your Search index.
         result = scope.search(search_index, search_req, SearchOptions(limit=13,fields=["color", "description"]))
-        
+
         row_string = ''
-        
+
         for row in result.rows():
             row_string = row_string + "\n\n" + row.fields['color'] + ": " + row.fields['description']
-        
-        return { 'row_string': row_string }
-    
+
+        return row_string
+
     except CouchbaseException as ex:
         import traceback
         traceback.print_exc()
-    
